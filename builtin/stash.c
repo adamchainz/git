@@ -955,7 +955,11 @@ static int show_stash(int argc, const char **argv, const char *prefix,
 		}
 	}
 
-	argc = setup_revisions(revision_args.nr, revision_args.v, &rev, NULL);
+	struct setup_revision_opt opt = {
+		.free_removed_argv_elements = 1,
+	};
+	argc = setup_revisions(revision_args.nr, revision_args.v, &rev, &opt);
+	revision_args.nr = argc;
 	if (argc > 1)
 		goto usage;
 	if (!rev.diffopt.output_format) {
